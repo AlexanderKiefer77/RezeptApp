@@ -1,7 +1,17 @@
 <template>
-  <AppHeader />
-  <RecipeItem v-for="recipe in recipes" :key="recipe.idMeal" :label="recipe.strMeal" :category="recipe.strCategory"
-    :image="recipe.strMealThumb" />
+  <AppHeader v-model="query" />
+
+  <p v-if="query && recipes.length === 0">
+    Keine Rezepte gefunden
+  </p>
+
+  <RecipeItem
+    v-for="recipe in recipes"
+    :key="recipe.idMeal"
+    :label="recipe.strMeal"
+    :category="recipe.strCategory"
+    :image="recipe.strMealThumb"
+  />
 </template>
 
 <script>
@@ -11,34 +21,53 @@ import RecipeItem from './components/RecipeItem.vue'
 export default {
   name: 'App',
   components: { AppHeader, RecipeItem },
-  props: {
-    label: String,
-    attributes: String,
-    image: String
-  },
+
   data() {
     return {
+      query: '',
       recipes: []
     }
   },
-  async mounted() {
-    /* Beispiel für die API Adresse mit Variablen. Diese API ist nicht mehr Kostenlos. 
-       Diese wurde im Video verwendet. Ich habe auf die untere API gewechselt zum testen.
-       const query = 'Sushi';
-       const appId = 'd7212edc';
-       const appKey = '3515d1c2238911f0dde38cb661b1f67e';
-       const url = `https://api.edaman.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
-    */
 
-    const query = 'curry'
+  watch: {
+    query() {
+      this.fetchRecipes()
+    }
+  },
+
+  methods: {
+    async fetchRecipes() {
+      if (!this.query || this.query.length < 2) {
+        this.recipes = []
+        return
+      }
+
+      const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${this.query}`
+      const resp = await fetch(url)
+      const data = await resp.json()
+
+      this.recipes = data.meals ?? []
+    }
+  }
+}
+
+
+ /*async mounted() {
+      /* Beispiel für die API Adresse mit Variablen. Diese API ist nicht mehr Kostenlos. 
+         Diese wurde im Video verwendet. Ich habe auf die untere API gewechselt zum testen.
+         const query = 'Sushi';
+         const appId = 'd7212edc';
+         const appKey = '3515d1c2238911f0dde38cb661b1f67e';
+         const url = `https://api.edaman.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
+      */
+
+    /*const query = 'curry'
     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
     const resp = await fetch(url)
     const data = await resp.json()
     this.recipes = data.meals
     console.log(this.recipes);
-    
-  }
-}
+  }*/
 </script>
 
 

@@ -2,6 +2,7 @@
     <!-- <a :href="url" class="recipeItemContainer"> 
         Beispiel für einen Link zum original Rezept, ist bei der genutzten API nicht vorhanden.
     -->
+
     <div class="recipeItemContainer">
         <img :src="image" class="recipe-image" />
         <div class="right-side">
@@ -14,14 +15,24 @@
 <script>
 export default {
     name: 'RecipeItem',
+
     props: {
-        label: String,
-        category: String,
-        image: String,
-        url: String,
+        label: {
+            type: String,
+            required: true
+        },
+        category: {
+            type: String,
+            required: true
+        },
+        image: {
+            type: String,
+            required: true
+        }
     }
 }
 </script>
+
 
 
 <style scoped>

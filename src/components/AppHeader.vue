@@ -1,16 +1,37 @@
 <template>
-    <header>
-        <input type="text" placeholder="Suche...">
-    </header>
+  <header>
+    <input
+      type="text"
+      placeholder="Suche..."
+      v-model="search"
+    />
+  </header>
 </template>
 
 <script>
+export default {
+  name: 'AppHeader',
 
-    export default { 
-        name: 'AppHeader',
+  props: {
+    modelValue: {
+      type: String,
+      default: ''
     }
+  },
 
+  computed: {
+    search: {
+      get() {
+        return this.modelValue
+      },
+      set(value) {
+        this.$emit('update:modelValue', value)
+      }
+    }
+  }
+}
 </script>
+
 
 <style scoped>
 header {
