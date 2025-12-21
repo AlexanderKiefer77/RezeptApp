@@ -1,32 +1,28 @@
 <template>
+    <!-- <a :href="url" class="recipeItemContainer"> 
+        Beispiel für einen Link zum original Rezept, ist bei der genutzten API nicht vorhanden.
+    -->
     <div class="recipeItemContainer">
-        <img :src="image" alt="Rezeptbild" class="recipe-image" /> <!-- Bild als Variable eingebunden -->
+        <img :src="image" class="recipe-image" />
         <div class="right-side">
-            <div>
-                {{ label }}
-            </div>
-            <div class="bottom-row">
-                {{ attributes }}
-            </div>
+            <div>{{ label }}</div>
+            <div class="bottom-row">{{ category }}</div>
         </div>
     </div>
 </template>
 
 <script>
-import logo from '@/assets/R1.png'  // Vue erkennt @ als src/ -- Bild wird Importiert
-
 export default {
     name: 'RecipeItem',
-    data() {
-        return {
-            image: logo,  // für Bild
-            label: 'Ramen Menü 1',
-            attributes: 'Vegan, Fettarm',
-        }
+    props: {
+        label: String,
+        category: String,
+        image: String,
+        url: String,
     }
 }
-
 </script>
+
 
 <style scoped>
 .recipeItemContainer {
@@ -57,5 +53,4 @@ export default {
     color: rgba(0, 0, 0, 0.5);
     font-size: 12px;
 }
-
 </style>

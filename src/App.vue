@@ -1,24 +1,50 @@
 <template>
-    <AppHeader></AppHeader>
-    <RecipeItem></RecipeItem>
+  <AppHeader />
+  <RecipeItem v-for="recipe in recipes" :key="recipe.idMeal" :label="recipe.strMeal" :category="recipe.strCategory"
+    :image="recipe.strMealThumb" />
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
-import RecipeItem from './components/RecipeItem.vue';
+import AppHeader from './components/AppHeader.vue'
+import RecipeItem from './components/RecipeItem.vue'
 
 export default {
   name: 'App',
-  components: {
-    AppHeader,
-    RecipeItem
+  components: { AppHeader, RecipeItem },
+  props: {
+    label: String,
+    attributes: String,
+    image: String
+  },
+  data() {
+    return {
+      recipes: []
+    }
+  },
+  async mounted() {
+    /* Beispiel für die API Adresse mit Variablen. Diese API ist nicht mehr Kostenlos. 
+       Diese wurde im Video verwendet. Ich habe auf die untere API gewechselt zum testen.
+       const query = 'Sushi';
+       const appId = 'd7212edc';
+       const appKey = '3515d1c2238911f0dde38cb661b1f67e';
+       const url = `https://api.edaman.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
+    */
+
+    const query = 'curry'
+    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
+    const resp = await fetch(url)
+    const data = await resp.json()
+    this.recipes = data.meals
+    console.log(this.recipes);
+    
   }
 }
 </script>
 
+
 <style>
 #app {
-  font-family: Gill Sans, 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+  font-family: Raleway;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -27,5 +53,13 @@ export default {
 
 body {
   margin: 0;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src: url("@/assets/fonts/raleway-v34-latin-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 </style>
