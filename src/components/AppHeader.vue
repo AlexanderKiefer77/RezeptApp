@@ -36,7 +36,7 @@ export default {
 <style scoped>
 header {
     background-color: #F4BC39;
-    height: 120px;
+    height: 80px;
     padding: 16px;
     display: flex;
     align-items: flex-end;
